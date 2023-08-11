@@ -8,9 +8,10 @@ SELECT Loan_no FROM Loan WHERE BName = 'AKURDI' AND Amount > 12000;
 
 3.Find all customers who have a loan from the bank. Find their names, loan_no, and loan amount.
 
-SELECT C.CName, B.Loan_no, B.Amount
-FROM Borrower AS B
-JOIN Customer AS C ON B.CName = C.CName;
+select a.CName, a.Loan_no, b.Amount 
+from Borrower as a 
+join Loan as b 
+on a.Loan_no=b.Loan_no;
 
 4.List all customers in alphabetical order who have a loan from the Akurdi branch.
  
