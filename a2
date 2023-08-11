@@ -6,7 +6,7 @@ create table Branch(BName varchar(20) primary key,BCity varchar(20) not null,Ass
 
 insert into Branch(BName, BCity, Assets) VALUES ('AKURDI','NIGDI',150000),('CAMP','PUNE',1000000),('KHADKI','PUNE',155000),('NAVI MUMBAI','MUMBAI',105000),('SANTA CRUZ','MUMBAI',105000),('STATION','PUNE',155000);
 
-CREATE TABLE Account(Account_no integer primary key,BName varchar(20) not null,Balance integer noy null, FOREIGN KEY (BName) REFERENCES Branch(BName) on delete cascade);
+CREATE TABLE Account(Account_no integer primary key,BName varchar(20) not null,Balance integer not null, FOREIGN KEY (BName) REFERENCES Branch(BName) on delete cascade);
 
 insert into Account(Account_no, BName, Balance) VALUES (1001,'CAMP',60000),(1002,'STATION',100000),(1003,'STATION',130000),(1004,'KHADKI',10000),(2001,'AKURDI',50000),(2002,'AKURDI',150000),(2003,'AKURDI',12000),(2004,'AKURDI',50000),(3001,'NAVI MUMBAI',60000),(3002,'SANTA CRUZ',16000),(3003,'NAVI MUMBAI',10000),(3004,'NAVI MUMBAI',12000);
 
