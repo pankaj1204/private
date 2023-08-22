@@ -1,76 +1,56 @@
 import java.util.*;
- 
-public class FCFS {
-public static void main(String args[])
-{
-Scanner sc = new Scanner(System.in);
-System.out.println("enter no of process: ");
-int n = sc.nextInt();
-int pid[] = new int[n];   // process ids
-int ar[] = new int[n];     // arrival times
-int bt[] = new int[n];     // burst or execution times
-int ct[] = new int[n];     // completion times
-int ta[] = new int[n];     // turn around times
-int wt[] = new int[n];     // waiting times
-int temp;
-float avgwt=0,avgta=0;
- 
-for(int i = 0; i < n; i++)
-{
-System.out.println("enter process " + (i+1) + " arrival time: ");
-ar[i] = sc.nextInt();
-System.out.println("enter process " + (i+1) + " brust time: ");
-bt[i] = sc.nextInt();
-pid[i] = i+1;
+
+class Task {
+    int arrivalTime;
+    int burstTime;
+    int completionTime;
+    int turnaroundTime;
+    int waitingTime;
+    int processID;
+
+    Task(int arrivalTime, int burstTime, int processID) {
+        this.arrivalTime = arrivalTime;
+        this.burstTime = burstTime;
+        this.processID = processID;
+    }
 }
- 
-//sorting according to arrival times
-for(int i = 0 ; i <n; i++)
-{
-for(int  j=0;  j < n-(i+1) ; j++)
-{
-if( ar[j] > ar[j+1] )
-{
-temp = ar[j];
-ar[j] = ar[j+1];
-ar[j+1] = temp;
-temp = bt[j];
-bt[j] = bt[j+1];
-bt[j+1] = temp;
-temp = pid[j];
-pid[j] = pid[j+1];
-pid[j+1] = temp;
+
+public class Sorting {
+    public static void main(String args[]) {
+        Scanner sc = new Scanner(System.in);
+        System.out.print("Enter the number of processes: ");
+        int n = sc.nextInt();
+        Task tasks[] = new Task[n];
+        float avgWaitingTime = 0, avgTurnaroundTime = 0;
+
+        for (int i = 0; i < n; i++) {
+            System.out.print("Arrival time for process " + (i + 1) + ": ");
+            int arrivalTime = sc.nextInt();
+            System.out.print("Burst time for process " + (i + 1) + ": ");
+            int burstTime = sc.nextInt();
+            tasks[i] = new Task(arrivalTime, burstTime, i + 1);
+        }
+
+        Arrays.sort(tasks, Comparator.comparingInt(task -> task.arrivalTime));
+
+        for (int i = 0; i < n; i++) {
+            tasks[i].completionTime = (i == 0 ? tasks[i].arrivalTime : Math.max(tasks[i].arrivalTime, tasks[i - 1].completionTime)) + tasks[i].burstTime;
+            tasks[i].turnaroundTime = tasks[i].completionTime - tasks[i].arrivalTime;
+            tasks[i].waitingTime = tasks[i].turnaroundTime - tasks[i].burstTime;
+            avgWaitingTime += tasks[i].waitingTime;
+            avgTurnaroundTime += tasks[i].turnaroundTime;
+        }
+
+        System.out.println("\nProcessID Arrival Burst Completion Turnaround Waiting");
+        for (Task task : tasks) {
+            System.out.printf("%-9d%-9d%-8d%-11d%-11d%d%n",
+                    task.processID, task.arrivalTime, task.burstTime, task.completionTime, task.turnaroundTime, task.waitingTime);
+        }
+
+        System.out.println("\nAverage Waiting Time: " + (avgWaitingTime / n));
+        System.out.println("Average Turnaround Time: " + (avgTurnaroundTime / n));
+
+        sc.close();
+    }
 }
-}
-}
-// finding completion times
-for(int  i = 0 ; i < n; i++)
-{
-if( i == 0)
-{
-ct[i] = ar[i] + bt[i];
-}
-else
-{
-if( ar[i] > ct[i-1])
-{
-ct[i] = ar[i] + bt[i];
-}
-else
-ct[i] = ct[i-1] + bt[i];
-}
-ta[i] = ct[i] - ar[i] ;          // turnaround time= completion time- arrival time
-wt[i] = ta[i] - bt[i] ;          // waiting time= turnaround time- burst time
-avgwt += wt[i] ;               // total waiting time
-avgta += ta[i] ;               // total turnaround time
-}
-System.out.println("\npid  arrival  brust  complete turn waiting");
-for(int  i = 0 ; i< n;  i++)
-{
-System.out.println(pid[i] + "  \t " + ar[i] + "\t" + bt[i] + "\t" + ct[i] + "\t" + ta[i] + "\t"  + wt[i] ) ;
-}
-sc.close();
-System.out.println("\naverage waiting time: "+ (avgwt/n));     // printing average waiting time.
-System.out.println("average turnaround time:"+(avgta/n));    // printing average turnaround time.
-}
-}
+    
