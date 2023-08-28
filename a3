@@ -1,0 +1,11 @@
+CREATE VIEW LoanCustomersAtPuneStation AS
+SELECT C.CName
+FROM Customer C
+JOIN Borrower B ON C.CName = B.CName
+JOIN Loan L ON B.Loan_no = L.Loan_no
+JOIN Branch Br ON L.BName = Br.BName
+WHERE Br.BCity = 'PUNE' AND Br.BName = 'STATION'
+ORDER BY C.CName;
+
+SELECT * FROM LoanCustomersAtPuneStation;
+
