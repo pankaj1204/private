@@ -9,3 +9,9 @@ ORDER BY C.CName;
 
 SELECT * FROM LoanCustomersAtPuneStation;
 
+CREATE VIEW BranchView AS
+SELECT BName, BCity
+FROM Branch;
+INSERT INTO BranchView (BName, BCity) VALUES ('NEW_BRANCH', 'NEW_CITY');
+UPDATE BranchView SET BCity = 'UPDATED_CITY' WHERE BName = 'AKURDI';
+DELETE FROM BranchView WHERE BName = 'NEW_BRANCH';
