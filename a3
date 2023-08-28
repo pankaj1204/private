@@ -9,6 +9,10 @@ ORDER BY C.CName;
 
 SELECT * FROM LoanCustomersAtPuneStation;
 
+
+ALTER TABLE Branch
+ALTER COLUMN Assets SET DEFAULT 0;
+
 CREATE VIEW BranchView AS
 SELECT BName, BCity
 FROM Branch;
