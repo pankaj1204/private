@@ -19,3 +19,19 @@ FROM Branch;
 INSERT INTO BranchView (BName, BCity) VALUES ('NEW_BRANCH', 'NEW_CITY');
 UPDATE BranchView SET BCity = 'UPDATED_CITY' WHERE BName = 'AKURDI';
 DELETE FROM BranchView WHERE BName = 'NEW_BRANCH';
+
+CREATE VIEW View3 AS
+SELECT B.CName AS BorrowerName, D.Account_no AS DepositorAccount
+FROM Borrower B
+JOIN Depositor D ON B.CName = D.CName;
+
+INSERT INTO Borrower (CName, Loan_no) VALUES ('NEW_BORROWER', 123);
+INSERT INTO Depositor (CName, Account_no) VALUES ('NEW_BORROWER', 456);
+
+UPDATE Borrower SET Loan_no = 789 WHERE CName = 'EXISTING_BORROWER';
+UPDATE Depositor SET Account_no = 987 WHERE CName = 'EXISTING_BORROWER';
+
+DELETE FROM Borrower WHERE CName = 'EXISTING_BORROWER';
+DELETE FROM Depositor WHERE CName = 'EXISTING_BORROWER';
+
+
