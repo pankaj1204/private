@@ -34,4 +34,9 @@ UPDATE Depositor SET Account_no = 987 WHERE CName = 'EXISTING_BORROWER';
 DELETE FROM Borrower WHERE CName = 'EXISTING_BORROWER';
 DELETE FROM Depositor WHERE CName = 'EXISTING_BORROWER';
 
+SELECT DISTINCT C.CName
+FROM Customer C
+LEFT JOIN Depositor D ON C.CName = D.CName
+LEFT JOIN Borrower B ON C.CName = B.CName;
+
 
