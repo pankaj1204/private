@@ -1,0 +1,18 @@
+CREATE TABLE companies(comp_id VARCHAR(20), name VARCHAR(20), cost INTEGER, year INTEGER);
+INSERT INTO companies (comp_id, name, cost, year) VALUES ('C001', 'ONGC', 2000, 2010);
+INSERT INTO companies (comp_id, name, cost, year) VALUES ('C002', 'HPCL', 2500, 2012);
+INSERT INTO companies (comp_id, name, cost, year) VALUES ('C005', 'IOCL', 1000, 2014);
+INSERT INTO companies (comp_id, name, cost, year) VALUES ('C006', 'BHEL', 3000, 2015);
+
+CREATE TABLE order_info(comp_id VARCHAR(20), domain VARCHAR(20), quantity INTEGER, FOREIGN KEY (comp_id) REFERENCES companies(comp_id));
+INSERT INTO order_info (comp_id, domain, quantity) VALUES ('C001', 'oil', 109);
+INSERT INTO order_info (comp_id, domain, quantity) VALUES ('C002', 'gas', 121);
+INSERT INTO order_info (comp_id, domain, quantity) VALUES ('C005', 'telecom', 115);
+
+select name,domain,cost,quantity from companies inner join order_info on companies.comp_id=order_info.comp_id;
+
+select name,domain,cost,quantity from companies left join order_info on companies.comp_id=order_info.comp_id;
+
+select name,domain,cost,quantity from companies right join order_info on companies.comp_id=order_info.comp_id;
+
+ SELECT companies.name, order_info.domain, companies.cost, order_info.quantity  FROM companies  RIGHT JOIN order_info ON companies.comp_id = order_info.comp_id  UNION  SELECT companies.name, order_info.domain, companies.cost, order_info.quantity  FROM companies  LEFT JOIN order_info ON companies.comp_id = order_info.comp_id;
