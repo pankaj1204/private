@@ -21,7 +21,7 @@ void initializeFrames(int n) {
     }
 }
 
-void simulateTransmissionErrors() {
+int simulateAcknowledgment() {
     srand(time(NULL));
 
     for (int i = 1; i < frames.size(); i++) {
@@ -31,6 +31,15 @@ void simulateTransmissionErrors() {
             frames[i].ack = 'n'; // Simulate acknowledgment failure
         }
     }
+
+    // Check if any frame was not acknowledged
+    for (int i = 1; i < frames.size(); i++) {
+        if (frames[i].ack == 'n') {
+            return i; // Return the frame number that was not acknowledged
+        }
+    }
+
+    return -1; // All frames acknowledged successfully
 }
 
 void resendFramesGoBackN(int r) {
