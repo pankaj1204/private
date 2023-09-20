@@ -1,96 +1,110 @@
-#include <stdio.h>
-#include <stdlib.h>
-#include <math.h>
-int n, r;
-struct frame
-{
+#include <iostream>
+#include <vector>
+#include <cstdlib>
+#include <ctime>
+
+using namespace std;
+
+struct Frame {
     char ack;
     int data;
-} frm[10];
-int sender(void);
-int sender()
-{
-    int i;
-    printf("\nEnter Number of frames to be sent:");
-    scanf("%d", &n);
-    for (i = 1; i < n; i++)
-    {
-        printf("\nEnter data for frames [%d] ", i);
-        scanf("%d", &frm[i].data);
-        frm[i].ack = 'y';
-    }
-    return 0;
-}
-void recvack(void);
-void recvack()
-{
-    int i;
-    rand();
-    r = rand() % n;
-    frm[r].ack = n;
-    for (i = 1; i <= n; i++)
-    {
-        if (frm[i].ack == n)
-        {
-            printf("\nThe frame number %d is not received\n", r);
-        }
-    }
-}
-void resend_sr(void);
-void resend_sr()
-{
-    printf("\nresending frame %d\n", r);
-    sleep(2);
+};
 
-    frm[r].ack = 'y';
-    printf("\nThe received frame is %d", frm[r].data);
-}
-void resend_gb(void);
-void resend_gb()
-{
-    int i;
-    printf("\nresending from frame %d", r);
-    for (i = r; i <= n; i++)
-    {
-        sleep(2);
-        frm[i].ack = 'y';
-        printf("\nReceived data of frame %d is %d", i, frm[i].data);
+int n;
+vector<Frame> frames;
+
+// Function to initialize sender frames
+void initializeSenderFrames() {
+    cout << "Enter the number of frames to be sent: ";
+    cin >> n;
+
+    frames.resize(n + 1); // Resize the vector to accommodate frames from 1 to n
+
+    for (int i = 1; i <= n; i++) {
+        cout << "Enter data for frame " << i << ": ";
+        cin >> frames[i].data;
+        frames[i].ack = 'y';
     }
 }
-void goback(void);
-void goback()
-{
-    sender();
-    recvack();
-    resend_gb();
-    printf("\nAll frames sent successfully\n");
+
+// Function to simulate acknowledgment reception
+int simulateAcknowledgment() {
+    srand(time(NULL));
+    int r = rand() % n + 1; // Random frame number between 1 and n
+
+    cout << "Simulating acknowledgment for frame " << r << endl;
+
+    if (frames[r].ack == 'n') {
+        frames[r].ack = 'y';
+        return r;
+    }
+
+    return -1;
 }
-void selective(void);
-void selective()
-{
-    sender();
-    recvack();
-    resend_sr();
-    printf("\nAll frames sent successfully\n");
+
+// Function to resend frames using Selective Repeat ARQ
+void resendFramesSelectiveRepeat(int r) {
+    if (r == -1) {
+        cout << "No frame to resend." << endl;
+        return;
+    }
+
+    cout << "Resending frame " << r << endl;
+    cout << "Received data of frame " << r << " is " << frames[r].data << endl;
 }
-int main()
-{
-    int c;
-    do
-    {
-        printf("\n\n1. Selective Repeat ARQ\n2. Goback ARQ\n3. Exit");
-        printf("\nEnter your choice:");
-        scanf("%d", &c);
-        switch (c)
-        {
-        case 1:
-            selective();
-            break;
-        case 2:
-            goback();
-            break;
-        case 3:
-            exit(0);
+
+// Function to resend frames using Go-Back-N ARQ
+void resendFramesGoBackN(int r) {
+    if (r == -1) {
+        cout << "No frame to resend." << endl;
+        return;
+    }
+
+    cout << "Resending frames from frame " << r << endl;
+
+    for (int i = r; i <= n; i++) {
+        frames[i].ack = 'y';
+        cout << "Received data of frame " << i << " is " << frames[i].data << endl;
+    }
+}
+
+// Function to implement Go-Back-N ARQ
+void goBackN() {
+    initializeSenderFrames();
+    int r = simulateAcknowledgment();
+    resendFramesGoBackN(r);
+    cout << "All frames sent successfully." << endl;
+}
+
+// Function to implement Selective Repeat ARQ
+void selectiveRepeat() {
+    initializeSenderFrames();
+    int r = simulateAcknowledgment();
+    resendFramesSelectiveRepeat(r);
+    cout << "All frames sent successfully." << endl;
+}
+
+int main() {
+    int choice;
+    do {
+        cout << "\n\n1. Selective Repeat ARQ\n2. Go-Back-N ARQ\n3. Exit\n";
+        cout << "Enter your choice: ";
+        cin >> choice;
+
+        switch (choice) {
+            case 1:
+                selectiveRepeat();
+                break;
+            case 2:
+                goBackN();
+                break;
+            case 3:
+                cout << "Exiting the program." << endl;
+                break;
+            default:
+                cout << "Invalid choice. Please try again." << endl;
         }
-    } while (c >= 4);
+    } while (choice != 3);
+
+    return 0;
 }
