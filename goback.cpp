@@ -12,32 +12,25 @@ struct Frame {
 
 vector<Frame> frames;
 
-void initializeFrames() {
-    int n;
-    cout << "Enter the number of frames to be sent: ";
-    cin >> n;
-
+void initializeFrames(int n) {
     frames.resize(n + 1);
 
     for (int i = 1; i <= n; i++) {
-        cout << "Enter data for frame " << i << ": ";
-        cin >> frames[i].data;
-        frames[i].ack = 'y';
+        frames[i].data = i;  // Assign frame number as data
+        frames[i].ack = 'y'; // Initialize all frames as acknowledged
     }
 }
 
-int simulateAcknowledgment() {
+void simulateTransmissionErrors() {
     srand(time(NULL));
-    int r = rand() % frames.size();
 
-    cout << "Simulating acknowledgment for frame " << r << endl;
-
-    if (frames[r].ack == 'n') {
-        frames[r].ack = 'y';
-        return r;
+    for (int i = 1; i < frames.size(); i++) {
+        int isAcknowledged = rand() % 2;
+        if (!isAcknowledged) {
+            cout << "Frame " << i << " was not acknowledged." << endl;
+            frames[i].ack = 'n'; // Simulate acknowledgment failure
+        }
     }
-
-    return -1;
 }
 
 void resendFramesGoBackN(int r) {
@@ -66,6 +59,7 @@ void resendFramesSelectiveRepeat(int r) {
 
 int main() {
     int choice;
+    int n; // Number of frames
     int r; // Declare r here
 
     do {
@@ -75,17 +69,17 @@ int main() {
 
         switch (choice) {
             case 1:
-                initializeFrames();
-                r = simulateAcknowledgment(); // Initialize r here
-                resendFramesGoBackN(r);
-                cout << "All frames sent successfully using Go-Back-N ARQ." << endl;
-                break;
-
             case 2:
-                initializeFrames();
-                r = simulateAcknowledgment(); // Initialize r here
-                resendFramesSelectiveRepeat(r);
-                cout << "All frames sent successfully using Selective Repeat ARQ." << endl;
+                cout << "Enter the number of frames to be sent: ";
+                cin >> n;
+                initializeFrames(n);
+                simulateTransmissionErrors(); // Simulate transmission errors
+                r = simulateAcknowledgment();
+                if (choice == 1)
+                    resendFramesGoBackN(r);
+                else
+                    resendFramesSelectiveRepeat(r);
+                cout << "All frames sent successfully using " << (choice == 1 ? "Go-Back-N" : "Selective Repeat") << " ARQ." << endl;
                 break;
 
             case 3:
