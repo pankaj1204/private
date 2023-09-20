@@ -66,6 +66,7 @@ void resendFramesSelectiveRepeat(int r) {
 
 int main() {
     int choice;
+    int r; // Declare r here
 
     do {
         cout << "\n1. Go-Back-N ARQ\n2. Selective Repeat ARQ\n3. Exit\n";
@@ -75,15 +76,15 @@ int main() {
         switch (choice) {
             case 1:
                 initializeFrames();
-                int r1 = simulateAcknowledgment();
-                resendFramesGoBackN(r1);
+                r = simulateAcknowledgment(); // Initialize r here
+                resendFramesGoBackN(r);
                 cout << "All frames sent successfully using Go-Back-N ARQ." << endl;
                 break;
 
             case 2:
                 initializeFrames();
-                int r2 = simulateAcknowledgment();
-                resendFramesSelectiveRepeat(r2);
+                r = simulateAcknowledgment(); // Initialize r here
+                resendFramesSelectiveRepeat(r);
                 cout << "All frames sent successfully using Selective Repeat ARQ." << endl;
                 break;
 
