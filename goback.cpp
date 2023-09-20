@@ -82,7 +82,6 @@ int main() {
                 cout << "Enter the number of frames to be sent: ";
                 cin >> n;
                 initializeFrames(n);
-                simulateTransmissionErrors(); // Simulate transmission errors
                 r = simulateAcknowledgment();
                 if (choice == 1)
                     resendFramesGoBackN(r);
