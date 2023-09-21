@@ -1,0 +1,56 @@
+CREATE TABLE Emp (
+    Emp_ID INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
+    Emp_Name VARCHAR(20),
+    Emp_City VARCHAR(20),
+    Emp_AdmDate DATE
+);
+
+INSERT INTO Emp (Emp_ID, Emp_Name, Emp_City, Emp_AdmDate)
+VALUES
+    (101, 'Rajesh Kumar', 'Mumbai', '2021-12-25'),
+    (102, 'Sneha Gupta', 'Delhi', '2022-01-10'),
+    (103, 'Priya Sharma', 'Bangalore', '2022-02-15'),
+    (104, 'Amit Patel', 'Ahmedabad', '2022-03-20'),
+    (105, 'Neha Singh', 'Chennai', '2022-04-25');
+
+DELIMITER //
+CREATE PROCEDURE Allemp()
+BEGIN
+    SELECT * FROM Emp;
+END;
+//
+DELIMITER ;
+
+call Allemp();
+
+DELIMITER **
+CREATE PROCEDURE Emp_details(IN Emp_no INT)
+BEGIN
+    SELECT * FROM Emp
+    WHERE Emp_ID = Emp_no;
+END;
+**
+DELIMITER ;
+
+call Emp_details(101);
+
+DELIMITER ;;
+CREATE PROCEDURE Emp_Out(OUT EName VARCHAR(20))
+BEGIN
+    SELECT Emp_Name INTO EName FROM Emp WHERE Emp_ID = 101;
+END;
+;;
+DELIMITER ;
+
+CALL Emp_Out(@EName);
+SELECT @EName;
+
+DELIMITER //
+CREATE PROCEDURE Emp_De(IN Emp_ID INT, IN Emp_Name VARCHAR(20), IN Emp_City VARCHAR(20), IN Emp_AdmDate DATE)
+BEGIN
+    INSERT INTO Emp (Emp_ID, Emp_Name, Emp_City, Emp_AdmDate) VALUES (Emp_ID, Emp_Name, Emp_City, Emp_AdmDate);
+END;
+//
+DELIMITER ;
+
+CALL Emp_De(107, 'Amita', 'Bangalore', '2023-09-21');
