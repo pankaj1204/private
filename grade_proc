@@ -1,12 +1,12 @@
--- create table stud_marks(roll_no number(20),name varchar2(20), total_marks number(20));
--- insert into stud_marks values(1,'Ganesh',1200);
--- insert into stud_marks values(2,'Ram',950);
--- insert into stud_marks values(3,'Sai',850);
--- insert into stud_marks values(4,'Laxman',800);
--- select * from stud_marks;
+create table stud_marks(roll_no number(20),name varchar2(20), total_marks number(20));
+insert into stud_marks values(1,'Ganesh',1200);
+insert into stud_marks values(2,'Ram',950);
+insert into stud_marks values(3,'Sai',850);
+insert into stud_marks values(4,'Laxman',800);
+select * from stud_marks;
 
--- create table result (roll_no number(20),name varchar2(20), class varchar2(20));
--- select * from result;
+create table result (roll_no number(20),name varchar2(20), class varchar2(20));
+select * from result;
 /*
 Create or replace procedure proc_grade
 (var_rollno in number,
