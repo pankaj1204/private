@@ -1,6 +1,6 @@
 #include <iostream>
 #include <vector>
-#include <limits> // Include this header for INT_MAX
+#include <limits>
 
 using namespace std;
 
@@ -9,6 +9,7 @@ struct MemoryBlock {
     int process_id;
 };
 
+// Function to allocate memory for a single process using Best Fit
 void allocateMemory(vector<MemoryBlock>& memory, int process_id, int process_size, const string& strategy) {
     int index = -1;
 
@@ -63,6 +64,19 @@ void allocateMemory(vector<MemoryBlock>& memory, int process_id, int process_siz
     }
 }
 
+// Function to display the memory block allocation
+void displayMemory(const vector<MemoryBlock>& memory) {
+    cout << "Memory Block Allocation:\n";
+    for (int i = 0; i < memory.size(); i++) {
+        cout << "Block " << i << ": Size = " << memory[i].size << ", Process ID = ";
+        if (memory[i].process_id != -1) {
+            cout << memory[i].process_id;
+        } else {
+            cout << "Empty";
+        }
+        cout << endl;
+    }
+}
 
 int main() {
     int memory_size, num_blocks;
@@ -80,27 +94,41 @@ int main() {
         memory[i].process_id = -1;
     }
 
-    int choice, process_id, process_size;
-    string strategies[] = {"Best", "First", "Next", "Worst"};
+    string strategy = "Best"; // Default strategy is Best Fit
 
-    do {
+    while (true) {
         cout << "\nMemory Placement Strategies:\n";
-        for (int i = 0; i < 4; i++) {
-            cout << i + 1 << ". " << strategies[i] << " Fit\n";
-        }
-        cout << "5. Exit\n";
+        cout << "1. Best Fit\n";
+        cout << "2. First Fit\n";
+        cout << "3. Next Fit\n";
+        cout << "4. Worst Fit\n";
+        cout << "5. Add Process\n";
+        cout << "6. Show Memory Block Allocation\n";
+        cout << "7. Exit\n";
+
+        int choice;
         cout << "Enter your choice: ";
         cin >> choice;
 
-        if (choice >= 1 && choice <= 4) {
-            cout << "Enter process ID and size: ";
-            cin >> process_id >> process_size;
-            allocateMemory(memory, process_id, process_size, strategies[choice - 1]);
-        } else if (choice != 5) {
-            cout << "Invalid choice. Please try again.\n";
+        if (choice == 7) {
+            break;
         }
 
-    } while (choice != 5);
+        if (choice >= 1 && choice <= 4) {
+            // Set the selected strategy
+            strategy = (choice == 1) ? "Best" : (choice == 2) ? "First" : (choice == 3) ? "Next" : "Worst";
+            cout << "Selected strategy: " << strategy << " Fit\n";
+        } else if (choice == 5) {
+            int process_id, process_size;
+            cout << "Enter process ID and size: ";
+            cin >> process_id >> process_size;
+            allocateMemory(memory, process_id, process_size, strategy);
+        } else if (choice == 6) {
+            displayMemory(memory);
+        } else {
+            cout << "Invalid choice. Please try again.\n";
+        }
+    }
 
     return 0;
 }
