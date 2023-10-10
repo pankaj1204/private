@@ -1,5 +1,6 @@
 #include <iostream>
 #include <vector>
+#include <limits> // Include this header for INT_MAX
 
 using namespace std;
 
@@ -12,7 +13,7 @@ void allocateMemory(vector<MemoryBlock>& memory, int process_id, int process_siz
     int index = -1;
 
     if (strategy == "Best") {
-        int min_size = INT_MAX;
+        int min_size = numeric_limits<int>::max(); // Use numeric_limits to get INT_MAX
         for (int i = 0; i < memory.size(); i++) {
             if (memory[i].process_id == -1 && memory[i].size >= process_size && memory[i].size < min_size) {
                 min_size = memory[i].size;
@@ -61,6 +62,7 @@ void allocateMemory(vector<MemoryBlock>& memory, int process_id, int process_siz
         cout << "Process " << process_id << " of size " << process_size << " cannot be placed using " << strategy << " Fit.\n";
     }
 }
+
 
 int main() {
     int memory_size, num_blocks;
