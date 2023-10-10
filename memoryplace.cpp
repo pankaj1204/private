@@ -9,12 +9,12 @@ struct MemoryBlock {
     int process_id;
 };
 
-// Function to allocate memory for a single process using Best Fit
+
 void allocateMemory(vector<MemoryBlock>& memory, int process_id, int process_size, const string& strategy) {
     int index = -1;
 
     if (strategy == "Best") {
-        int min_size = numeric_limits<int>::max(); // Use numeric_limits to get INT_MAX
+        int min_size = numeric_limits<int>::max();
         for (int i = 0; i < memory.size(); i++) {
             if (memory[i].process_id == -1 && memory[i].size >= process_size && memory[i].size < min_size) {
                 min_size = memory[i].size;
@@ -64,7 +64,6 @@ void allocateMemory(vector<MemoryBlock>& memory, int process_id, int process_siz
     }
 }
 
-// Function to display the memory block allocation
 void displayMemory(const vector<MemoryBlock>& memory) {
     cout << "Memory Block Allocation:\n";
     for (int i = 0; i < memory.size(); i++) {
@@ -79,9 +78,7 @@ void displayMemory(const vector<MemoryBlock>& memory) {
 }
 
 int main() {
-    int memory_size, num_blocks;
-    cout << "Enter the memory size: ";
-    cin >> memory_size;
+    int num_blocks;
 
     cout << "Enter the number of memory blocks: ";
     cin >> num_blocks;
@@ -93,8 +90,8 @@ int main() {
         cin >> memory[i].size;
         memory[i].process_id = -1;
     }
-
-    string strategy = "Best"; // Default strategy is Best Fit
+	
+    string strategy = "Best";
 
     while (true) {
         cout << "\nMemory Placement Strategies:\n";
@@ -115,7 +112,6 @@ int main() {
         }
 
         if (choice >= 1 && choice <= 4) {
-            // Set the selected strategy
             strategy = (choice == 1) ? "Best" : (choice == 2) ? "First" : (choice == 3) ? "Next" : "Worst";
             cout << "Selected strategy: " << strategy << " Fit\n";
         } else if (choice == 5) {
